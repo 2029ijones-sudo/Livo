@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Livo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui; }
+        body { background: #f8fafc; }
+        
+        /* Header */
+        header { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 1rem 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .header-content { display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: #6366f1; font-size: 1.5rem; font-weight: bold; }
+        .user-menu { display: flex; align-items: center; gap: 1rem; }
+        .btn { padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; cursor: pointer; border: none; }
+        .btn-primary { background: #6366f1; color: white; }
+        .btn-outline { background: transparent; color: #6366f1; border: 2px solid #6366f1; }
+        
+        /* Dashboard */
+        .dashboard { padding: 2rem 0; }
+        .welcome { background: white; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .welcome h1 { margin-bottom: 0.5rem; }
+        .welcome p { color: #6b7280; }
+        
+        /* Projects Grid */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+        .project-card { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .project-card h3 { margin-bottom: 0.5rem; }
+        .project-card p { color: #6b7280; font-size: 0.875rem; margin-bottom: 1rem; }
+        .project-meta { display: flex; justify-content: space-between; color: #9ca3af; font-size: 0.875rem; }
+        
+        /* Create Project Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal { background: white; padding: 2rem; border-radius: 12px; width: 90%; max-width: 500px; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .close-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #6b7280; }
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: 500; }
+        input, select { width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 6px; }
+        .btn-group { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        
+        /* Loading */
+        .loading { text-align: center; padding: 2rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Livo Dashboard</div>
+                <div class="user-menu">
+                    <a href="/explore" class="btn btn-outline">Explore</a>
+                    <button class="btn btn-primary" id="create-project-btn">Create Lab</button>
+                    <button class="btn btn-outline" id="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <div class="container">
+            <div class="welcome">
+                <h1>Welcome, <span id="username">User</span>!</h1>
+                <p>Create and manage your coding labs and projects.</p>
+            </div>
+            
+            <div>
+                <h2>Your Labs</h2>
+                <div id="projects-container" class="projects-grid">
+                    <div class="loading">Loading your labs...</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Project Modal -->
+    <div class="modal-overlay" id="create-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create New Lab</h2>
+                <button class="close-btn" id="close-modal">&times;</button>
+            </div>
+            <form id="create-project-form">
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="project-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <input type="text" id="project-description">
+                </div>
+                <div class="form-group">
+                    <label>Language</label>
+                    <select id="project-language" required>
+                        <option value="">Select language</option>
+                        <option value="node">Node.js</option>
+                        <option value="python">Python</option>
+                        <option value="cs">C#</option>
+                        <option value="electron">Electron</option>
+                    </select>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline" id="cancel-create">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Create Lab</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('livo_token');
+        if (!token) {
+            window.location.href = '/login';
+        }
+
+        // DOM Elements
+        const createBtn = document.getElementById('create-project-btn');
+        const createModal = document.getElementById('create-modal');
+        const closeModal = document.getElementById('close-modal');
+        const cancelCreate = document.getElementById('cancel-create');
+        const createForm = document.getElementById('create-project-form');
+        const logoutBtn = document.getElementById('logout-btn');
+        const projectsContainer = document.getElementById('projects-container');
+        const usernameEl = document.getElementById('username');
+
+        // Open/Close Modal
+        createBtn.addEventListener('click', () => {
+            createModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            createModal.style.display = 'none';
+        });
+
+        cancelCreate.addEventListener('click', () => {
+            createModal.style.display = 'none';
+        });
+
+        // Logout
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('livo_token');
+            window.location.href = '/';
+        });
+
+        // Create Project
+        createForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const project = {
+                name: document.getElementById('project-name').value,
+                description: document.getElementById('project-description').value,
+                language: document.getElementById('project-language').value
+            };
+            
+            try {
+                const response = await fetch('/api/create-project', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(project)
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    createModal.style.display = 'none';
+                    createForm.reset();
+                    loadProjects();
+                    // Redirect to workspace
+                    window.location.href = `/workspace/${data.projectId}`;
+                } else {
+                    alert('Failed to create project');
+                }
+            } catch (error) {
+                alert('Network error');
+            }
+        });
+
+        // Load user projects
+        async function loadProjects() {
+            try {
+                const response = await fetch('/api/get-projects', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const projects = await response.json();
+                    displayProjects(projects);
+                }
+            } catch (error) {
+                projectsContainer.innerHTML = '<div class="error">Failed to load projects</div>';
+            }
+        }
+
+        function displayProjects(projects) {
+            if (projects.length === 0) {
+                projectsContainer.innerHTML = '<div>No labs yet. Create your first one!</div>';
+                return;
+            }
+            
+            projectsContainer.innerHTML = projects.map(project => `
+                <div class="project-card">
+                    <h3>${project.name}</h3>
+                    <p>${project.description || 'No description'}</p>
+                    <div class="project-meta">
+                        <span>${project.language}</span>
+                        <span>${new Date(project.created_at).toLocaleDateString()}</span>
+                    </div>
+                    <button onclick="openWorkspace('${project.id}')" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Open</button>
+                </div>
+            `).join('');
+        }
+
+        function openWorkspace(projectId) {
+            window.location.href = `/workspace/${projectId}`;
+        }
+
+        // Load user data and projects
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get username from token (in real app, decode JWT or fetch user)
+            const storedUser = localStorage.getItem('livo_user');
+            if (storedUser) {
+                usernameEl.textContent = JSON.parse(storedUser).username;
+            }
+            
+            loadProjects();
+        });
+    </script>
+</body>
+</html>
