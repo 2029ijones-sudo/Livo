@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livo - Build & Share Projects</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --dark: #1f2937;
+            --light: #f9fafb;
+            --border: #e5e7eb;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui; }
+        body { background: var(--light); color: var(--dark); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        
+        /* Header */
+        header { background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+        .logo { font-size: 1.75rem; font-weight: bold; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo i { font-size: 1.5rem; }
+        .nav-links a { margin-left: 2rem; color: var(--dark); text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: var(--primary); }
+        
+        /* Hero */
+        .hero { text-align: center; padding: 5rem 0; background: linear-gradient(135deg, #f0f9ff 0%, #fef7ff 100%); }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1.5rem; }
+        .hero p { font-size: 1.25rem; color: #6b7280; max-width: 700px; margin: 0 auto 2.5rem; }
+        .highlight { color: var(--primary); }
+        
+        /* Buttons */
+        .btn { display: inline-block; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; text-decoration: none; cursor: pointer; border: none; transition: all 0.2s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: #4f46e5; }
+        .btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+        .btn-outline:hover { background: rgba(99, 102, 241, 0.1); }
+        
+        /* Features */
+        .features { padding: 5rem 0; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 3rem; }
+        .feature-card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary); }
+        
+        /* Footer */
+        footer { background: var(--dark); color: white; padding: 4rem 0 2rem; margin-top: 5rem; }
+        .footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; }
+        
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .nav-links { display: none; }
+            .hero { padding: 3rem 0; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i>💻</i>
+                    <span>Livo</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="/explore">Explore Livos</a>
+                    <a href="/login">Sign In</a>
+                    <a href="/signup" class="btn btn-primary">Get Started</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Code, Create, Share <span class="highlight">Live</span></h1>
+            <p>Build projects with Node.js, Python, C#, and Electron directly in your browser. No setup required. Powered by Vercel and Supabase.</p>
+            <div style="margin-top: 2rem;">
+                <a href="/signup" class="btn btn-primary" style="margin-right: 1rem;">Start Coding Now</a>
+                <a href="/explore" class="btn btn-outline">Explore Projects</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 1rem;">Powerful Development Platform</h2>
+            <p style="text-align: center; color: #6b7280; max-width: 600px; margin: 0 auto 3rem;">Everything you need to build, test, and share</p>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h3>⚡ Browser-Based IDE</h3>
+                    <p>Full coding workspace with syntax highlighting, file management, and terminal emulation.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🔧 Multiple Languages</h3>
+                    <p>Support for Node.js, Python, C#, and Electron desktop applications.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>💾 Supabase Database</h3>
+                    <p>Integrated PostgreSQL database with real-time capabilities for full-stack apps.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>🚀 Vercel Hosting</h3>
+                    <p>Projects deployed instantly on Vercel's global edge network.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>👥 Share & Collaborate</h3>
+                    <p>Publish your "Livos" for others to view, fork, and learn from.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>📧 Secure Auth</h3>
+                    <p>Email verification with NodeMailer and secure password storage.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" style="padding: 5rem 0; background: white;">
+        <div class="container">
+            <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">How It Works</h2>
+            <div style="max-width: 800px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                    <div style="text-align: center;">
+                        <div style="background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">1</div>
+                        <h3>Sign Up</h3>
+                        <p>Create account with email verification</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">2</div>
+                        <h3>Create Lab</h3>
+                        <p>Set up your coding workspace</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">3</div>
+                        <h3>Build & Test</h3>
+                        <p>Code and run programs in browser</p>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="background: var(--primary); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 1rem;">4</div>
+                        <h3>Share</h3>
+                        <p>Publish your Livo for others</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="logo" style="color: white; margin-bottom: 1rem;">Livo</div>
+                    <p>Build, test, and share programs directly in your browser.</p>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Platform</h3>
+                    <p><a href="/" style="color: #d1d5db; text-decoration: none;">Home</a></p>
+                    <p><a href="/explore" style="color: #d1d5db; text-decoration: none;">Explore</a></p>
+                    <p><a href="/signup" style="color: #d1d5db; text-decoration: none;">Sign Up</a></p>
+                </div>
+                <div>
+                    <h3 style="margin-bottom: 1rem;">Technology</h3>
+                    <p style="color: #d1d5db;">Vercel Hosting</p>
+                    <p style="color: #d1d5db;">Supabase Database</p>
+                    <p style="color: #d1d5db;">NodeMailer</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #374151;">
+                <p style="color: #9ca3af;">© 2024 Livo. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Check if user is logged in
+        async function checkAuth() {
+            const token = localStorage.getItem('livo_token');
+            if (token) {
+                const response = await fetch('/api/auth-check');
+                if (response.ok) {
+                    // User is logged in, update nav
+                    const navLinks = document.querySelector('.nav-links');
+                    if (navLinks) {
+                        navLinks.innerHTML = `
+                            <a href="/admin">Dashboard</a>
+                            <a href="/explore">Explore</a>
+                            <a href="#" id="logout">Logout</a>
+                        `;
+                        document.getElementById('logout').addEventListener('click', logout);
+                    }
+                }
+            }
+        }
+
+        async function logout() {
+            localStorage.removeItem('livo_token');
+            window.location.href = '/';
+        }
+
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>
