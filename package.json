@@ -1,0 +1,19 @@
+{
+  "name": "livo",
+  "version": "1.0.0",
+  "description": "Web-based development platform",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0",
+    "nodemailer": "^6.9.7",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.1"
+  },
+  "engines": {
+    "node": "18.x"
+  }
+}
